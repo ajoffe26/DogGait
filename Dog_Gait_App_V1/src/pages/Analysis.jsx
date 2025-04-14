@@ -1,58 +1,91 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles.css"; // Import CSS file
-import dogExample from "../assets/dogExample.jpg"; // Import the image
+import "../styles.css";
+import dogExample from "../assets/dogExample.jpg";
 
-export default function Analysis() {
+function Analysis() {
   const navigate = useNavigate();
-  const [showDiagnosis, setShowDiagnosis] = useState(false);
+  const [breed, setBreed] = useState("");
+  const [gaitSpeed, setGaitSpeed] = useState("walk");
 
   return (
     <div className="analysis-container">
-      {/* Back to Home Button */}
-      <button className="back-button" onClick={() => navigate("/")}>
+      {/* Back Button */}
+      <button className="analysis-button" onClick={() => navigate("/")}>
         Back to Home
       </button>
 
-      {/* Title */}
       <h1>Dog Gait Analysis</h1>
 
-      <div className="content-wrapper">
-        {/* Dog Image */}
-        <img className="analysis-image" src={dogExample} alt="Dog gait analysis" />
+      <div className="content-flex">
+        {/* Left Panel - Input Fields */}
+        <div className="left-panel">
+          <label className="panel-label">Insert Dog Breed:</label>
+          <input
+            type="text"
+            placeholder="e.g. Labrador"
+            className="input-box"
+            value={breed}
+            onChange={(e) => setBreed(e.target.value)}
+          />
 
-        {/* Diagnosis Panel (Hidden by Default) */}
-        {showDiagnosis && (
-          <div className="diagnosis-panel">
-            <h2>Diagnosis Report</h2>
-            <p>
-              The AI analysis indicates that the dog's gait exhibits slight irregularities 
-              in its hind leg movement. This could suggest mild joint stiffness or early 
-              signs of arthritis. Further observation is recommended.
-            </p>
+          <label className="panel-label">Choose Gait Speed:</label>
+          <div className="radio-group">
+            <label>
+              <input
+                type="radio"
+                value="walk"
+                checked={gaitSpeed === "walk"}
+                onChange={(e) => setGaitSpeed(e.target.value)}
+              />
+              Walk
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="gallop"
+                checked={gaitSpeed === "gallop"}
+                onChange={(e) => setGaitSpeed(e.target.value)}
+              />
+              Gallop
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="run"
+                checked={gaitSpeed === "run"}
+                onChange={(e) => setGaitSpeed(e.target.value)}
+              />
+              Run
+            </label>
           </div>
-        )}
+        </div>
+
+        {/* Center - Image */}
+        <img src={dogExample} alt="Dog Analysis" className="analysis-image" />
+
+        {/* Right Panel - Always Visible Diagnosis */}
+        <div className="diagnosis-panel">
+          <h3>AI Diagnosis</h3>
+          <p>
+            The AI analysis will apear here
+          </p>
+        </div>
       </div>
 
-      {/* Upload Button (on its own line) */}
-      <button className="upload-button action-button">Upload Video</button>
-
-      {/* Video Control Buttons in a Row */}
+      {/* Buttons Below */}
       <div className="button-container">
-        <button className="action-button">Play Video</button>
-        <button className="action-button">Play Video with AI Overlay</button>
-        <button className="action-button" onClick={() => setShowDiagnosis(true)}>
-          Get AI Diagnosis
-        </button>
+        <button className="analysis-button">Upload Video</button>
+        <button className="analysis-button">Play Video with AI Overlay</button>
+        <button className="analysis-button">Get AI Diagnosis</button>
       </div>
 
-      {/* Placeholder Description */}
       <p className="description">
-        The AI model analyzes the dog's gait by detecting key points on its legs
-        and body. By comparing these movements to a database of normal and
-        abnormal gaits, the system can provide insights on potential mobility
-        issues.
+        The AI model analyzes the dog's gait by detecting key points and
+        comparing movement against standard gait patterns.
       </p>
     </div>
   );
 }
+
+export default Analysis;
